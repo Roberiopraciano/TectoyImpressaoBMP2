@@ -22,6 +22,8 @@ import br.com.daruma.framework.mobile.DarumaMobile;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     private Button btnImprimir;
     private DarumaMobile dmf;
 
@@ -36,10 +38,15 @@ public class MainActivity extends AppCompatActivity {
         btnImprimir  = findViewById(R.id.btnImprimir);
         btnImprimir.setOnClickListener(v ->{
             try {
+                dmf.iniciarComunicacao();
+                dmf.enviarComando(""+((char) 0x1B)+((char) 0x61)+((char) 0x01)+((char) 0x1B)+((char) 0x45)+((char) 0x01)+"PRODUTO TESTE\n"+((char) 0x1B)+((char) 0x45)+((char) 0x30)+"prod. teste cod. 112233443321\n"+((char) 0x1D)+((char) 0x6B)+((char) 0x02)+"123456789012"+((char) 0x00)+"\n\n\n");
+
+                dmf.fecharComunicacao();
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/bmp");
+                intent.setType("image/*");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, 2);
             }catch(Exception ex){
                 new AlertDialog.Builder(this)
